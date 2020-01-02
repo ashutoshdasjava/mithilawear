@@ -150,8 +150,8 @@ const MithilaBuyingComponent = props =>{
                     <div className="card h-100 ">
 
                         <div className="card-body ">
-                            <h4 className="card-title d-inline-block"> Product : Name 1</h4>
-                            <div className="card-text d-inline-block"> Quantity : 1 </div>
+                            <div className="card-text d-inline-block"> Code : #{props.itemCode}</div>
+                            <div className="card-text d-inline-block"> Amount : 1 </div>
                             <div className="card-text d-inline-block"> Price : Rs 5000 </div>
 
                         </div>
@@ -159,8 +159,8 @@ const MithilaBuyingComponent = props =>{
                     <div className="card h-100 ">
 
                         <div className="card-body">
-                            <h4 className="card-title d-inline-block"> Product : Name 1</h4>
-                            <div className="card-text d-inline-block"> Quantity : 1 </div>
+                            <div className="card-text d-inline-block"> Product : #{props.itemCode}</div>
+                            <div className="card-text d-inline-block"> Amount : 1 </div>
                             <div className="card-text d-inline-block"> Price : Rs 5000 </div>
 
                         </div>

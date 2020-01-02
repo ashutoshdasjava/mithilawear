@@ -1,17 +1,31 @@
 package com.ashu.reactspringboot;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.ashu.reactspringboot.response.UnsplashResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/v1")
 public class ProductController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
+    @Autowired
+    private IProductService unsplashProductService;
+
     private static List<Map> products = new ArrayList();
+
+    private static List<Map> allProducts = new ArrayList();
     static {
         Map product1 = new HashMap();
 
@@ -84,9 +98,59 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products")
-    public List sayHello( ){
+    public List fetchAllProducts( ){
 
-        return products;
+        WebClient unsplashClient = WebClient.create("https://unsplash.com/napi/photos/UZtRU-lWZE4/related");
+
+
+        try{
+
+            Mono<UnsplashResponse> object =  unsplashProductService.getProducts();
+
+            UnsplashResponse unsplashResponse =  object.block();
+
+             allProducts = unsplashResponse.getResults();
+
+            Object results =  unsplashProductService.getProducts().map(response->response.getResults());
+
+            //allProducts = results;
+
+            logger.info("allProducts={} results={}",allProducts,results);
+
+
+
+        }catch (Exception ex ){
+
+            logger.error("Error={}",ex);
+
+            allProducts=products;
+        }
+
+
+        return allProducts;
+
+
+    }
+
+    @GetMapping(path = "/products/{id}")
+    @ResponseBody
+    public Map fetchProduct(@PathVariable final String id){
+
+
+
+        List<Map> selectedProduct= allProducts.stream().filter(product -> id.equalsIgnoreCase((String)product.get("id"))).collect(Collectors.toList());
+
+        Map map = selectedProduct.get(0);
+
+        logger.info("selectedProduct={} ",selectedProduct);
+
+        logger.info("map={} ",map);
+
+        return map;
+
+
+
+        //return products.get(Integer.parseInt(id)-1);
 
 
     }
