@@ -3,12 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 import MithilaNavComponent from './MithilaNavComponent';
 import MithilaCardComponent from './MithilaCardComponent';
+import MithilaProductComponent from './MithilaProductComponent';
 
 class App extends React.Component {
 
     state ={
         message : 'Ashapur',
-        products : []
+        products : [{"id": "1","image" : "https://source.unsplash.com/random/300x200", "name": "Product 1", "title":"title 1"}]
     };
 
 
@@ -56,7 +57,7 @@ class App extends React.Component {
                     console.log("error ",error)
                     this.setState({
 
-                        error
+                        products:[{"id": "1","image" : "https://source.unsplash.com/random/300x200", "name": "Product 1", "title":"title 1"}]
                     });
                 }
             )
@@ -74,7 +75,9 @@ componentDidUpdate() {
 
             <div className="App">
                 <MithilaNavComponent />
-            <MithilaCardComponent cards={this.state.products}/>
+                <MithilaCardComponent cards={this.state.products}/>
+                <MithilaProductComponent/>
+
             </div>
         )
 
