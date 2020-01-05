@@ -1,5 +1,6 @@
 package com.ashu.reactspringboot;
 
+import com.ashu.reactspringboot.product.service.IProductOperations;
 import com.ashu.reactspringboot.response.UnsplashResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class ProductController {
 
     @Autowired
     private IProductService unsplashProductService;
+
+    @Autowired
+    private IProductOperations postGressProductService;
 
     private static List<Map> products = new ArrayList();
 
@@ -97,6 +101,14 @@ public class ProductController {
 
     }
 
+
+    @GetMapping(path = "/productsfrompg")
+    public List findAllProducts( ){
+
+        return postGressProductService.getProducts();
+
+
+    }
     @GetMapping(path = "/products")
     public List fetchAllProducts( ){
 
